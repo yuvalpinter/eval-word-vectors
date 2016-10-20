@@ -53,4 +53,6 @@ def spearmans_rho(ranked_dict1, ranked_dict2):
     num += (xi-x_avg)*(yi-y_avg)
     d_x += (xi-x_avg)**2
     d_y += (yi-y_avg)**2
+  if d_x*d_y <= 0:
+    return 0.
   return num/(math.sqrt(d_x*d_y))
