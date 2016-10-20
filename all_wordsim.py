@@ -16,12 +16,22 @@ if __name__=='__main__':
   for i, filename in enumerate(os.listdir(word_sim_dir)):
     manual_dict, auto_dict = ({}, {})
     not_found, total_size = (0, 0)
+    first_line = True
+    output_all_distances = False
     for line in open(os.path.join(word_sim_dir, filename),'r'):
+      if first_line:
+        first_line = False
+        if line.strip() == "debug":
+          output_all_distances = True
+          continue
       line = line.strip().lower()
       word1, word2, val = line.split()
       if word1 in word_vecs and word2 in word_vecs:
         manual_dict[(word1, word2)] = float(val)
-        auto_dict[(word1, word2)] = cosine_sim(word_vecs[word1], word_vecs[word2])
+        auto = cosine_sim(word_vecs[word1], word_vecs[word2])
+        auto_dict[(word1, word2)] = auto
+        if output_all_distances:
+          print "%15s" % word1, "%15s" % word2, "%10.4f" % float(val), "%10.4f" % auto
       else:
         not_found += 1
       total_size += 1    
